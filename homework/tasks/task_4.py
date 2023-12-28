@@ -1,21 +1,26 @@
-async def task_1(i: int):
+import asyncio
+
+
+async def task_1(i: int, cur: str):
+    cur = cur + '1'
     if i == 0:
-        return
+        return cur
 
     if i > 5:
-        await task_2(i // 2)
+        return await task_2(i // 2, cur)
     else:
-        await task_2(i - 1)
+        return await task_2(i - 1, cur)
 
 
-async def task_2(i: int):
+async def task_2(i: int, cur: str):
+    cur = cur + '2'
     if i == 0:
-        return
+        return cur
 
     if i % 2 == 0:
-        await task_1(i // 2)
+        return await task_1(i // 2, cur)
     else:
-        await task_2(i - 1)
+        return await task_2(i - 1, cur)
 
 
 async def coroutines_execution_order(i: int = 42) -> int:
@@ -27,6 +32,10 @@ async def coroutines_execution_order(i: int = 42) -> int:
     # Пример:
     # i = 7
     # return 12212
-    await task_1(i)
+    result = await task_1(i, '')
 
-    # YOUR CODE GOES HERE
+    return int(result)
+
+
+answer_cons = asyncio.run(coroutines_execution_order())
+print(answer_cons)
