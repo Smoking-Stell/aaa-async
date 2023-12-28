@@ -9,11 +9,18 @@ async def limit_execution_time(coro: Coroutine, max_execution_time: float) -> No
     # Тест проверяет, что каждая переданная корутина была запущена, и все они завершились за заданное
     # время.
     #
-    # YOUR CODE GOES HERE
+    try:
+        await asyncio.wait_for(coro, timeout=max_execution_time)
+    except asyncio.TimeoutError:
+        raise RuntimeError("What")
 
 
 async def limit_execution_time_many(*coros: Coroutine, max_execution_time: float) -> None:
     # Функция эквивалентна limit_execution_time, но корутин на вход приходит несколько.
     #
-    # YOUR CODE GOES HERE
+    try:
+        await asyncio.wait_for(asyncio.gather(*coros),
+                               timeout=max_execution_time)
+    except asyncio.TimeoutError:
+        raise RuntimeError("What")
 
